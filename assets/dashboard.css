@@ -1,0 +1,359 @@
+.site-readiness-body h2 {
+  line-height: 1.4;
+}
+
+.site-readiness-body h3 {
+  padding: 0;
+  font-weight: 400;
+}
+
+.site-readiness-progress-wrapper {
+  margin-bottom: 1rem;
+}
+
+.site-readiness-progress {
+  display: inline-block;
+  height: 20px;
+  width: 20px;
+  margin: 0;
+  border-radius: 100%;
+  position: relative;
+  font-weight: 600;
+  font-size: 0.4rem;
+}
+
+.site-readiness-progress-count {
+  position: absolute;
+  display: block;
+  height: 80px;
+  width: 80px;
+  left: 50%;
+  top: 50%;
+  margin-top: -40px;
+  margin-left: -40px;
+  border-radius: 100%;
+  line-height: 6.3;
+  font-size: 2em;
+}
+
+.loading .site-readiness-progress svg #bar {
+  stroke-dashoffset: 0;
+  stroke: #c3c4c7;
+  animation: loadingPulse 3s infinite ease-in-out;
+}
+
+.site-readiness-progress svg circle {
+  stroke-dashoffset: 0;
+  transition: stroke-dashoffset 1s linear;
+  stroke: #c3c4c7;
+  stroke-width: 2em;
+}
+
+.green .site-readiness-progress #bar {
+  stroke: #00a32a;
+}
+
+.orange .site-readiness-progress #bar {
+  stroke: #dba617;
+}
+
+.red .site-readiness-progress #bar {
+  stroke: #d63638;
+}
+
+.site-readiness-progress-label {
+  font-weight: 600;
+  line-height: 20px;
+  margin-left: 0.3rem;
+}
+
+@keyframes loadingPulse {
+  0% {
+    stroke: #c3c4c7;
+  }
+
+  50% {
+    stroke: #72aee6;
+  }
+
+  100% {
+    stroke: #c3c4c7;
+  }
+}
+
+.site-readiness-tabs-wrapper {
+  display: -ms-inline-grid;
+  -ms-grid-columns: 1fr 1fr 1fr 1fr;
+  vertical-align: top;
+  display: inline-grid;
+  grid-template-columns: 1fr 1fr 1fr 1fr;
+}
+
+.site-readiness-tabs-wrapper.tab-count-1 {
+  grid-template-columns: 1fr;
+}
+
+.site-readiness-tabs-wrapper.tab-count-2 {
+  grid-template-columns: 1fr 1fr;
+}
+
+.site-readiness-tabs-wrapper.tab-count-3 {
+  grid-template-columns: 1fr 1fr 1fr;
+}
+
+.site-readiness-tab {
+  display: block;
+  text-decoration: none;
+  color: inherit;
+  padding: 0.5rem 1rem 1rem;
+  margin: 0 1rem;
+  transition: box-shadow 0.5s ease-in-out;
+}
+
+.site-readiness-offscreen-nav-wrapper {
+  position: relative;
+  background: 0 0;
+  border: none;
+}
+
+.site-readiness-offscreen-nav-wrapper:focus .site-readiness-offscreen-nav {
+  left: initial;
+}
+
+.site-readiness-offscreen-nav {
+  display: none;
+  position: absolute;
+  padding-top: 10px;
+  right: 0;
+  top: 100%;
+  width: 13rem;
+}
+
+.site-readiness-offscreen-nav-wrapper.visible .site-readiness-offscreen-nav {
+  display: inline-block;
+}
+
+.site-readiness-offscreen-nav:before {
+  position: absolute;
+  content: "";
+  width: 0;
+  height: 0;
+  border-style: solid;
+  border-width: 0 10px 5px;
+  border-color: transparent transparent #fff;
+  right: 20px;
+  top: 5px;
+}
+
+.site-readiness-offscreen-nav .site-readiness-tab {
+  background: #fff;
+  box-shadow: 0 2px 5px 0 rgba(0, 0, 0, 0.75);
+}
+
+.site-readiness-offscreen-nav .site-readiness-tab.active {
+  box-shadow: inset 3px 0 #3582c4;
+  font-weight: 600;
+}
+
+.site-readiness-body {
+  max-width: 800px;
+  margin: 0 auto;
+}
+
+.widefat.site-readiness-table th {
+  font-size: 13px;
+}
+
+.site-readiness-table td:first-child {
+  width: 30%;
+}
+
+.site-readiness-table td {
+  width: 70%;
+}
+
+.site-readiness-table ol,
+.site-readiness-table ul {
+  margin: 0;
+}
+
+.site-readiness-body li {
+  line-height: 1.5;
+}
+
+.site-readiness-body .good::before,
+.site-readiness-body .pass::before {
+  content: "\f147";
+  content: "\f147"/"";
+  color: #00a32a;
+}
+
+.site-readiness-body .warning::before {
+  content: "\f460";
+  content: "\f460"/"";
+  color: #dba617;
+}
+
+.site-readiness-body .info::before {
+  content: "\f348";
+  content: "\f348"/"";
+  color: #72aee6;
+}
+
+.site-readiness-body .error::before,
+.site-readiness-body .fail::before {
+  content: "\f335";
+  content: "\f335"/"";
+  color: #d63638;
+}
+
+.site-readiness-copy-buttons {
+  margin: 1rem 0;
+}
+
+.site-readiness-copy-buttons .copy-button-wrapper {
+  display: inline-flex;
+  align-items: center;
+  margin: 0.5rem 0 1rem;
+}
+
+.site-readiness-copy-buttons .success {
+  color: #007017;
+  margin-left: 0.5rem;
+}
+
+.site-status-has-issues.hide {
+  display: none;
+}
+
+.site-readiness-view-more {
+  text-align: center;
+}
+
+.site-readiness-issues-wrapper:first-of-type {
+  margin-top: 3rem;
+}
+
+.site-readiness-issues-wrapper {
+  margin-bottom: 3rem;
+  margin-top: 2rem;
+}
+
+.site-status-all-clear {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  text-align: center;
+  height: 100%;
+  width: 100%;
+  margin: 0 0 3rem;
+}
+
+@media all and (min-width: 784px) {
+  .site-status-all-clear {
+    margin: 2rem 0 5rem;
+  }
+}
+
+.site-status-all-clear.hide {
+  display: none;
+}
+
+.site-status-all-clear .dashicons {
+  font-size: 150px;
+  height: 150px;
+  margin-bottom: 2rem;
+  width: 150px;
+}
+
+.site-status-all-clear .encouragement {
+  font-size: 1.5rem;
+  font-weight: 600;
+}
+
+.site-status-all-clear p {
+  margin: 0;
+}
+
+.wp-core-ui .button.site-readiness-view-passed {
+  position: relative;
+  padding-right: 40px;
+  padding-left: 20px;
+}
+
+.site-readiness-wp-paths-sizes.spinner {
+  visibility: visible;
+  float: none;
+  margin: 0 4px;
+  flex-shrink: 0;
+}
+
+#src_site_readiness .site-readiness-details {
+  padding-left: 16px;
+}
+
+#src_site_readiness .site-readiness-details p:first-child {
+  margin-top: 0;
+}
+
+#src_site_readiness .site-readiness-details p:last-child {
+  margin-bottom: 0;
+}
+
+#src_site_readiness .site-readiness-widget {
+  display: grid;
+  grid-template-columns: 1fr 2fr;
+  grid-auto-rows: minmax(64px, auto);
+  column-gap: 16px;
+  align-items: center;
+}
+
+#src_site_readiness .site-readiness-progress-label {
+  margin-left: 0;
+}
+
+.site-readiness-widget-title-section {
+  margin-bottom: 0;
+  text-align: center;
+}
+
+@media screen and (max-width: 480px) {
+  #src_site_readiness .site-readiness-widget {
+    grid-template-columns: 100%;
+  }
+}
+
+@media screen and (max-width: 782px) {
+  .site-readiness-issues-wrapper .site-readiness-accordion-trigger {
+    flex-direction: column;
+    align-items: flex-start;
+  }
+
+  .site-readiness-accordion-trigger .badge {
+    margin: 1em 0 0;
+  }
+
+  .site-readiness-table {
+    table-layout: fixed;
+  }
+
+  .site-readiness-table td,
+  .site-readiness-table th {
+    box-sizing: border-box;
+    display: block;
+    width: 100%;
+    word-wrap: break-word;
+  }
+
+  .site-readiness-table td:first-child,
+  .widefat.site-readiness-table th {
+    width: 100%;
+    padding-bottom: 0;
+    font-weight: 600;
+  }
+
+  .wp-core-ui .site-readiness-copy-buttons .copy-button {
+    margin-bottom: 0;
+  }
+}

@@ -1,0 +1,97 @@
+.src-settings .src-checks-table {
+  margin-top: 1rem;
+
+  thead th {
+    padding: 8px;
+    font-weight: 600;
+  }
+
+  tbody td,
+  tfoot td {
+    padding: 8px;
+    vertical-align: middle;
+  }
+
+  tbody tr + tr td {
+    border-top: 1px solid #f0f0f1;
+  }
+
+  input.regular-text {
+    width: 100%;
+    margin: 0;
+  }
+
+  select {
+    width: 100%;
+  }
+
+  .src-check-row[data-check-type="option"] .src-name-constant,
+  .src-check-row[data-check-type="constant"] .src-name-option {
+    display: none;
+  }
+
+  .src-col-value[data-value-type="boolean"] .src-value-text,
+  .src-col-value:not([data-value-type="boolean"]) .src-value-boolean {
+    display: none;
+  }
+
+  .src-value-wrapper {
+    display: flex;
+    flex-wrap: nowrap;
+    gap: 4px;
+    align-items: center;
+
+    .src-value-type-select {
+      flex-shrink: 0;
+      width: auto;
+    }
+
+    .src-value-text,
+    .src-value-boolean {
+      flex: 1;
+      min-width: 0;
+    }
+  }
+
+  .src-col-label {
+    width: 25%;
+  }
+
+  .src-col-type {
+    width: 12%;
+  }
+
+  .src-col-name {
+    width: 22%;
+  }
+
+  .src-col-value {
+    width: 23%;
+  }
+
+  .src-col-severity {
+    width: 14%;
+  }
+
+  .src-col-actions {
+    width: 4%;
+    text-align: center;
+  }
+
+  .src-remove-check {
+    color: #b32d2e;
+    cursor: pointer;
+    padding: 0;
+    text-decoration: none;
+
+    &:hover {
+      color: #a00;
+    }
+
+    .dashicons {
+      font-size: 18px;
+      width: 18px;
+      height: 18px;
+    }
+  }
+}
