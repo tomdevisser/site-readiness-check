@@ -83,7 +83,9 @@ function src_render_dashboard_widget() {
 		</div>
 
 		<div class="site-readiness-details">
-			<?php if ( 0 === $total_checks ) { ?>
+			<?php
+			if ( 0 === $total_checks ) {
+				?>
 				<p>
 					<?php
 					printf(
@@ -93,9 +95,22 @@ function src_render_dashboard_widget() {
 					);
 					?>
 				</p>
-			<?php } elseif ( $all_clear ) { ?>
+				<?php
+			} elseif ( $all_clear ) {
+				?>
 				<p><?php esc_html_e( 'All checks have passed. Your site is ready to go!', 'src' ); ?></p>
-			<?php } else { ?>
+				<p>
+					<?php
+					printf(
+						/* translators: %s: link to Site Readiness screen */
+						esc_html__( 'Look at the passed checks on the %s.', 'src' ),
+						'<a href="' . esc_url( $readiness_url ) . '">' . esc_html__( 'Site Readiness screen', 'src' ) . '</a>'
+					);
+					?>
+				</p>
+				<?php
+			} else {
+				?>
 				<p>
 					<?php
 					if ( $has_critical && count( $recommended ) > 0 ) {
@@ -103,10 +118,12 @@ function src_render_dashboard_widget() {
 							/* translators: 1: number of critical issues, 2: number of recommended improvements */
 							esc_html__( 'Your site has %1$s and %2$s that need attention.', 'src' ),
 							'<strong>' . sprintf(
+								/* translators: %d: number of critical issues */
 								esc_html( _n( '%d critical issue', '%d critical issues', count( $critical ), 'src' ) ),
 								count( $critical )
 							) . '</strong>',
 							'<strong>' . sprintf(
+								/* translators: %d: number of recommendations */
 								esc_html( _n( '%d recommendation', '%d recommendations', count( $recommended ), 'src' ) ),
 								count( $recommended )
 							) . '</strong>'
@@ -116,6 +133,7 @@ function src_render_dashboard_widget() {
 							/* translators: %s: number of critical issues */
 							esc_html__( 'Your site has %s that should be resolved before going live.', 'src' ),
 							'<strong>' . sprintf(
+								/* translators: %d: number of critical issues */
 								esc_html( _n( '%d critical issue', '%d critical issues', count( $critical ), 'src' ) ),
 								count( $critical )
 							) . '</strong>'
@@ -125,6 +143,7 @@ function src_render_dashboard_widget() {
 							/* translators: %s: number of recommendations */
 							esc_html__( 'Your site is looking good, but there are %s to improve it further.', 'src' ),
 							'<strong>' . sprintf(
+								/* translators: %d: number of recommendations */
 								esc_html( _n( '%d recommendation', '%d recommendations', count( $recommended ), 'src' ) ),
 								count( $recommended )
 							) . '</strong>'
@@ -138,6 +157,7 @@ function src_render_dashboard_widget() {
 						/* translators: 1: number of items, 2: link to Site Readiness screen */
 						esc_html__( 'Take a look at the %1$s on the %2$s.', 'src' ),
 						'<strong>' . sprintf(
+							/* translators: %d: number of items */
 							esc_html( _n( '%d item', '%d items', $failed_checks, 'src' ) ),
 							$failed_checks
 						) . '</strong>',
@@ -145,7 +165,9 @@ function src_render_dashboard_widget() {
 					);
 					?>
 				</p>
-			<?php } ?>
+				<?php
+			}
+			?>
 		</div>
 	</div>
 	<?php

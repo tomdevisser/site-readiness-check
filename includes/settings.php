@@ -158,6 +158,20 @@ function src_render_settings_page() {
 	<div class="wrap src-settings">
 		<h1><?php esc_html_e( 'Site Readiness Check', 'src' ); ?></h1>
 
+		<div class="src-import-export">
+			<h2><?php esc_html_e( 'Import / Export', 'src' ); ?></h2>
+			<p><?php esc_html_e( 'Export your checks to a JSON file or import checks from a previously exported file. Imported checks replace the current list — review and save to apply.', 'src' ); ?></p>
+			<div class="src-import-export-actions">
+				<button type="button" class="button" id="src-export-checks">
+					<?php esc_html_e( 'Export checks', 'src' ); ?>
+				</button>
+				<label class="button" id="src-import-checks-label" for="src-import-file">
+					<?php esc_html_e( 'Import checks', 'src' ); ?>
+				</label>
+				<input type="file" id="src-import-file" accept=".json" class="hidden" />
+			</div>
+		</div>
+
 		<form method="post" action="options.php">
 			<?php settings_fields( 'src_settings' ); ?>
 
@@ -185,7 +199,7 @@ function src_render_settings_page() {
 					src_render_check_row( 0, array() );
 				}
 				?>
-				</tbody>
+			</tbody>
 				<tfoot>
 					<tr>
 						<td colspan="6">
@@ -253,11 +267,15 @@ function src_render_check_row( $index, $check ) {
 				class="src-name-option"
 			>
 				<option value=""><?php esc_html_e( '— Select option —', 'src' ); ?></option>
-				<?php foreach ( src_get_option_names() as $option_name ) { ?>
+				<?php
+				foreach ( src_get_option_names() as $option_name ) {
+					?>
 					<option value="<?php echo esc_attr( $option_name ); ?>" <?php selected( $check['name'], $option_name ); ?>>
 						<?php echo esc_html( $option_name ); ?>
 					</option>
-				<?php } ?>
+					<?php
+				}
+				?>
 			</select>
 			<input
 				type="text"
@@ -311,7 +329,7 @@ function src_render_check_row( $index, $check ) {
 			</select>
 		</td>
 		<td class="src-col-actions">
-			<button type="button" class="button-link src-remove-check" aria-label="<?php esc_attr_e( 'Remove this check', 'src' ); ?>">
+			<button type="button" class="button src-remove-check">
 				<span class="dashicons dashicons-trash"></span>
 			</button>
 		</td>

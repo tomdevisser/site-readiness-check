@@ -2,6 +2,8 @@
   const addButton = document.getElementById("src-add-check");
   const tbody = document.getElementById("src-checks-body");
   const template = document.getElementById("src-check-row-template");
+  const exportButton = document.getElementById("src-export-checks");
+  const importFile = document.getElementById("src-import-file");
 
   if (!addButton || !tbody || !template) {
     return;
@@ -113,4 +115,132 @@
       newRow.querySelector("input").focus();
     }
   });
+
+  function collectChecks() {
+    const checks = [];
+    tbody.querySelectorAll(".src-check-row").forEach(function (row) {
+      const index = getRowIndex(row);
+      const type = row.getAttribute("data-check-type");
+      const label = row.querySelector(
+        'input[name="src_checks[' + index + '][label]"]',
+      ).value;
+      const name =
+        type === "option"
+          ? row.querySelector(".src-name-option").value
+          : row.querySelector(".src-name-constant").value;
+      const valueCell = row.querySelector(".src-col-value");
+      const valueType = valueCell.getAttribute("data-value-type");
+      const value =
+        valueType === "boolean"
+          ? valueCell.querySelector(".src-value-boolean").value
+          : valueCell.querySelector(".src-value-text").value;
+      const severity = row.querySelector(
+        'select[name="src_checks[' + index + '][severity]"]',
+      ).value;
+
+      if (name) {
+        checks.push({
+          label: label,
+          type: type,
+          name: name,
+          value: value,
+          value_type: valueType,
+          severity: severity,
+        });
+      }
+    });
+    return checks;
+  }
+
+  function createRow(index, check) {
+    const html = template.innerHTML.replace(/__INDEX__/g, index);
+    const temp = document.createElement("tbody");
+    temp.innerHTML = html;
+    const row = temp.querySelector("tr");
+    if (!row) {
+      return null;
+    }
+
+    row.setAttribute("data-check-type", check.type || "option");
+    row.querySelector(".src-type-select").value = check.type || "option";
+    row.querySelector('input[name="src_checks[' + index + '][label]"]').value =
+      check.label || "";
+
+    if (check.type === "constant") {
+      row.querySelector(".src-name-constant").value = check.name || "";
+    } else {
+      row.querySelector(".src-name-option").value = check.name || "";
+    }
+
+    const valueCell = row.querySelector(".src-col-value");
+    valueCell.setAttribute("data-value-type", check.value_type || "string");
+    row.querySelector(".src-value-type-select").value =
+      check.value_type || "string";
+
+    if (check.value_type === "boolean") {
+      valueCell.querySelector(".src-value-boolean").value = check.value || "1";
+    } else {
+      valueCell.querySelector(".src-value-text").value = check.value || "";
+    }
+
+    row.querySelector(
+      'select[name="src_checks[' + index + '][severity]"]',
+    ).value = check.severity || "recommended";
+
+    updateNameFields(row);
+    updateValueFields(row);
+    bindRow(row);
+
+    return row;
+  }
+
+  if (exportButton) {
+    exportButton.addEventListener("click", function () {
+      const checks = collectChecks();
+      const blob = new Blob([JSON.stringify(checks, null, 2)], {
+        type: "application/json",
+      });
+      const a = document.createElement("a");
+      a.href = URL.createObjectURL(blob);
+      a.download = "site-readiness-checks.json";
+      a.click();
+      URL.revokeObjectURL(a.href);
+    });
+  }
+
+  if (importFile) {
+    importFile.addEventListener("change", function (e) {
+      const file = e.target.files[0];
+      if (!file) {
+        return;
+      }
+
+      const reader = new FileReader();
+      reader.onload = function (event) {
+        let checks;
+        try {
+          checks = JSON.parse(event.target.result);
+        } catch (err) {
+          alert("Invalid JSON file.");
+          return;
+        }
+
+        if (!Array.isArray(checks)) {
+          alert("Invalid format: expected an array of checks.");
+          return;
+        }
+
+        tbody.innerHTML = "";
+
+        checks.forEach(function (check, i) {
+          const row = createRow(i, check);
+          if (row) {
+            tbody.appendChild(row);
+          }
+        });
+      };
+      reader.readAsText(file);
+      importFile.value = "";
+    });
+  }
 })();
