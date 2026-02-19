@@ -99,7 +99,7 @@ function src_sanitize_checks( $input ) {
 	$sanitized = array();
 
 	foreach ( $input as $check ) {
-		$type = in_array( $check['type'] ?? '', array( 'option', 'constant' ), true )
+		$type = in_array( $check['type'] ?? '', array( 'option', 'constant', 'plugin' ), true )
 			? $check['type']
 			: 'option';
 
@@ -240,7 +240,10 @@ function src_render_check_row( $index, $check ) {
 		)
 	);
 	?>
-	<?php $is_option = 'option' === $check['type']; ?>
+	<?php
+	$is_option = 'option' === $check['type'];
+	$is_plugin = 'plugin' === $check['type'];
+	?>
 	<tr class="src-check-row" data-check-type="<?php echo esc_attr( $check['type'] ); ?>">
 		<td class="src-col-label">
 			<input
@@ -258,6 +261,9 @@ function src_render_check_row( $index, $check ) {
 				</option>
 				<option value="constant" <?php selected( $check['type'], 'constant' ); ?>>
 					<?php esc_html_e( 'WP Config Constant', 'src' ); ?>
+				</option>
+				<option value="plugin" <?php selected( $check['type'], 'plugin' ); ?>>
+					<?php esc_html_e( 'Plugin', 'src' ); ?>
 				</option>
 			</select>
 		</td>
@@ -279,10 +285,17 @@ function src_render_check_row( $index, $check ) {
 			</select>
 			<input
 				type="text"
-				<?php echo ! $is_option ? 'name="src_checks[' . esc_attr( $index ) . '][name]"' : ''; ?>
-				value="<?php echo esc_attr( $is_option ? '' : $check['name'] ); ?>"
+				<?php echo 'constant' === $check['type'] ? 'name="src_checks[' . esc_attr( $index ) . '][name]"' : ''; ?>
+				value="<?php echo esc_attr( 'constant' === $check['type'] ? $check['name'] : '' ); ?>"
 				placeholder="<?php esc_attr_e( 'e.g. WP_ENVIRONMENT_TYPE', 'src' ); ?>"
 				class="regular-text src-name-constant"
+			/>
+			<input
+				type="text"
+				<?php echo $is_plugin ? 'name="src_checks[' . esc_attr( $index ) . '][name]"' : ''; ?>
+				value="<?php echo esc_attr( $is_plugin ? $check['name'] : '' ); ?>"
+				placeholder="<?php esc_attr_e( 'e.g. woocommerce', 'src' ); ?>"
+				class="regular-text src-name-plugin"
 			/>
 		</td>
 		<td class="src-col-value" data-value-type="<?php echo esc_attr( $check['value_type'] ); ?>">
@@ -307,13 +320,27 @@ function src_render_check_row( $index, $check ) {
 				/>
 				<select
 					class="src-value-boolean"
-					<?php echo 'boolean' === $check['value_type'] ? 'name="src_checks[' . esc_attr( $index ) . '][value]"' : ''; ?>
+					<?php echo 'boolean' === $check['value_type'] && ! $is_plugin ? 'name="src_checks[' . esc_attr( $index ) . '][value]"' : ''; ?>
 				>
 					<option value="1" <?php selected( $check['value'], '1' ); ?>>
 						<?php esc_html_e( 'True', 'src' ); ?>
 					</option>
 					<option value="0" <?php selected( $check['value'], '0' ); ?>>
 						<?php esc_html_e( 'False', 'src' ); ?>
+					</option>
+				</select>
+				<select
+					class="src-value-plugin-status"
+					<?php echo $is_plugin ? 'name="src_checks[' . esc_attr( $index ) . '][value]"' : ''; ?>
+				>
+					<option value="active" <?php selected( $check['value'], 'active' ); ?>>
+						<?php esc_html_e( 'Active', 'src' ); ?>
+					</option>
+					<option value="inactive" <?php selected( $check['value'], 'inactive' ); ?>>
+						<?php esc_html_e( 'Inactive', 'src' ); ?>
+					</option>
+					<option value="not-installed" <?php selected( $check['value'], 'not-installed' ); ?>>
+						<?php esc_html_e( 'Not installed', 'src' ); ?>
 					</option>
 				</select>
 			</div>

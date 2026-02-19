@@ -37,30 +37,43 @@
     const type = row.getAttribute("data-check-type");
     const optionSelect = row.querySelector(".src-name-option");
     const constantInput = row.querySelector(".src-name-constant");
+    const pluginInput = row.querySelector(".src-name-plugin");
     const nameAttr = "src_checks[" + getRowIndex(row) + "][name]";
+
+    optionSelect.removeAttribute("name");
+    constantInput.removeAttribute("name");
+    pluginInput.removeAttribute("name");
 
     if (type === "option") {
       optionSelect.setAttribute("name", nameAttr);
-      constantInput.removeAttribute("name");
-    } else {
+    } else if (type === "constant") {
       constantInput.setAttribute("name", nameAttr);
-      optionSelect.removeAttribute("name");
+    } else if (type === "plugin") {
+      pluginInput.setAttribute("name", nameAttr);
     }
   }
 
   function updateValueFields(row) {
+    const type = row.getAttribute("data-check-type");
     const valueCell = row.querySelector(".src-col-value");
     const valueType = valueCell.getAttribute("data-value-type");
     const textInput = valueCell.querySelector(".src-value-text");
     const boolSelect = valueCell.querySelector(".src-value-boolean");
+    const pluginStatusSelect = valueCell.querySelector(
+      ".src-value-plugin-status",
+    );
     const valueAttr = "src_checks[" + getRowIndex(row) + "][value]";
 
-    if (valueType === "boolean") {
+    textInput.removeAttribute("name");
+    boolSelect.removeAttribute("name");
+    pluginStatusSelect.removeAttribute("name");
+
+    if (type === "plugin") {
+      pluginStatusSelect.setAttribute("name", valueAttr);
+    } else if (valueType === "boolean") {
       boolSelect.setAttribute("name", valueAttr);
-      textInput.removeAttribute("name");
     } else {
       textInput.setAttribute("name", valueAttr);
-      boolSelect.removeAttribute("name");
     }
 
     textInput.type = valueType === "integer" ? "number" : "text";
@@ -73,6 +86,7 @@
       const row = select.closest(".src-check-row");
       row.setAttribute("data-check-type", select.value);
       updateNameFields(row);
+      updateValueFields(row);
     });
   }
 
@@ -124,16 +138,24 @@
       const label = row.querySelector(
         'input[name="src_checks[' + index + '][label]"]',
       ).value;
-      const name =
-        type === "option"
-          ? row.querySelector(".src-name-option").value
-          : row.querySelector(".src-name-constant").value;
+      let name;
+      if (type === "option") {
+        name = row.querySelector(".src-name-option").value;
+      } else if (type === "plugin") {
+        name = row.querySelector(".src-name-plugin").value;
+      } else {
+        name = row.querySelector(".src-name-constant").value;
+      }
       const valueCell = row.querySelector(".src-col-value");
       const valueType = valueCell.getAttribute("data-value-type");
-      const value =
-        valueType === "boolean"
-          ? valueCell.querySelector(".src-value-boolean").value
-          : valueCell.querySelector(".src-value-text").value;
+      let value;
+      if (type === "plugin") {
+        value = valueCell.querySelector(".src-value-plugin-status").value;
+      } else if (valueType === "boolean") {
+        value = valueCell.querySelector(".src-value-boolean").value;
+      } else {
+        value = valueCell.querySelector(".src-value-text").value;
+      }
       const severity = row.querySelector(
         'select[name="src_checks[' + index + '][severity]"]',
       ).value;
@@ -166,7 +188,9 @@
     row.querySelector('input[name="src_checks[' + index + '][label]"]').value =
       check.label || "";
 
-    if (check.type === "constant") {
+    if (check.type === "plugin") {
+      row.querySelector(".src-name-plugin").value = check.name || "";
+    } else if (check.type === "constant") {
       row.querySelector(".src-name-constant").value = check.name || "";
     } else {
       row.querySelector(".src-name-option").value = check.name || "";
@@ -177,7 +201,10 @@
     row.querySelector(".src-value-type-select").value =
       check.value_type || "string";
 
-    if (check.value_type === "boolean") {
+    if (check.type === "plugin") {
+      valueCell.querySelector(".src-value-plugin-status").value =
+        check.value || "active";
+    } else if (check.value_type === "boolean") {
       valueCell.querySelector(".src-value-boolean").value = check.value || "1";
     } else {
       valueCell.querySelector(".src-value-text").value = check.value || "";

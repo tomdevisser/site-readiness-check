@@ -30,7 +30,21 @@
   }
 
   .src-check-row[data-check-type="option"] .src-name-constant,
-  .src-check-row[data-check-type="constant"] .src-name-option {
+  .src-check-row[data-check-type="option"] .src-name-plugin,
+  .src-check-row[data-check-type="constant"] .src-name-option,
+  .src-check-row[data-check-type="constant"] .src-name-plugin,
+  .src-check-row[data-check-type="plugin"] .src-name-option,
+  .src-check-row[data-check-type="plugin"] .src-name-constant {
+    display: none;
+  }
+
+  .src-check-row[data-check-type="plugin"] .src-value-type-select,
+  .src-check-row[data-check-type="plugin"] .src-value-text,
+  .src-check-row[data-check-type="plugin"] .src-value-boolean {
+    display: none;
+  }
+
+  .src-check-row:not([data-check-type="plugin"]) .src-value-plugin-status {
     display: none;
   }
 

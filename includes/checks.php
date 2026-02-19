@@ -24,7 +24,12 @@ function src_evaluate_checks() {
 
 	foreach ( $checks as $check ) {
 		$actual = src_get_actual_value( $check );
-		$passed = src_compare_values( $actual, $check['value'], $check['value_type'] );
+
+		if ( 'plugin' === $check['type'] ) {
+			$passed = $actual === $check['value'];
+		} else {
+			$passed = src_compare_values( $actual, $check['value'], $check['value_type'] );
+		}
 
 		$results[] = array(
 			'label'    => $check['label'],
@@ -55,7 +60,39 @@ function src_get_actual_value( $check ) {
 		return defined( $check['name'] ) ? constant( $check['name'] ) : null;
 	}
 
+	if ( 'plugin' === $check['type'] ) {
+		return src_get_plugin_status( $check['name'] );
+	}
+
 	return null;
+}
+
+/**
+ * Get the status of a plugin by its folder slug.
+ *
+ * @param string $slug Plugin folder slug (e.g. 'woocommerce').
+ * @return string 'active', 'inactive', or 'not-installed'.
+ */
+function src_get_plugin_status( $slug ) {
+	if ( ! function_exists( 'get_plugins' ) ) {
+		require_once ABSPATH . 'wp-admin/includes/plugin.php';
+	}
+
+	$all_plugins = get_plugins();
+	$plugin_file = '';
+
+	foreach ( $all_plugins as $file => $data ) {
+		if ( strpos( $file, $slug . '/' ) === 0 || $file === $slug . '.php' ) {
+			$plugin_file = $file;
+			break;
+		}
+	}
+
+	if ( empty( $plugin_file ) ) {
+		return 'not-installed';
+	}
+
+	return is_plugin_active( $plugin_file ) ? 'active' : 'inactive';
 }
 
 /**

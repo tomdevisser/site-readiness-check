@@ -218,9 +218,13 @@ function src_render_check_result( $result ) {
 
 	$label = ! empty( $result['label'] ) ? $result['label'] : $result['name'];
 
-	$type_label = 'option' === $result['type']
-		? __( 'Setting / Option', 'src' )
-		: __( 'WP Config Constant', 'src' );
+	if ( 'option' === $result['type'] ) {
+		$type_label = __( 'Setting / Option', 'src' );
+	} elseif ( 'plugin' === $result['type'] ) {
+		$type_label = __( 'Plugin', 'src' );
+	} else {
+		$type_label = __( 'WP Config Constant', 'src' );
+	}
 
 	$actual_display = null === $result['actual']
 		? __( 'not set', 'src' )
